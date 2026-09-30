@@ -1,14 +1,16 @@
+import hmac
 import os
 from typing import Literal
 
 import httpx
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, Header, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, field_validator
 
 OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434").rstrip("/")
 DEFAULT_MODEL = os.getenv("OLLAMA_DEFAULT_MODEL", "llama3.2")
 OLLAMA_TIMEOUT_SECONDS = float(os.getenv("OLLAMA_TIMEOUT_SECONDS", "180"))
+CHAT_API_TOKEN = os.getenv("meu_token_super_seguro_123")
 
 app = FastAPI(title="Nexo API", version="1.0.0")
 app.add_middleware(
@@ -18,6 +20,7 @@ app.add_middleware(
         "http://127.0.0.1:5173",
         "http://localhost:4173",
         "http://127.0.0.1:4173",
+        "https://projeto-ia.noireb649.workers.dev"
     ],
     allow_methods=["GET", "POST"],
     allow_headers=["Content-Type"],
@@ -47,7 +50,16 @@ async def health() -> dict[str, str]:
 
 
 @app.post("/api/chat")
-async def chat(request: ChatRequest) -> dict[str, str]:
+async def chat(
+    request: ChatRequest,
+    authorization: str | None = Header(default=None),
+) -> dict[str, str]:
+    if CHAT_API_TOKEN and not hmac.compare_digest(
+        authorization or "",
+        f"Bearer {CHAT_API_TOKEN}",
+    ):
+        raise HTTPException(status_code=401, detail="Token de acesso inválido.")
+
     ollama_request = {
         "model": request.model,
         "messages": [message.model_dump() for message in request.messages],

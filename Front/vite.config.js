@@ -10,7 +10,16 @@ export default defineConfig({
   ],
   server: {
     proxy: {
-      '/api': 'http://127.0.0.1:8000',
+      '/api': {
+        target: 'https://cargo-industry-extract-audience.trycloudflare.com',
+        changeOrigin: true,
+        configure: (proxy) => {
+          proxy.on('proxyReq', (proxyRequest) => {
+            const token = process.env.CHAT_API_TOKEN
+            if (token) proxyRequest.setHeader('Authorization', `Bearer ${token}`)
+          })
+        },
+      },
     },
   },
   resolve: {

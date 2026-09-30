@@ -9,7 +9,7 @@ npm install
 npm run dev
 ```
 
-Na configuração local, o Vite encaminha `/api` para o backend em `http://127.0.0.1:8000`. Inicie o Python e o Vite em terminais separados. Para usar outro endereço de API, crie um arquivo `.env.local` nesta pasta:
+Na configuração local, o Vite encaminha `/api` para o backend pelo Cloudflare Tunnel. No deploy, o Worker encaminha `/api/chat` ao mesmo túnel. Veja [Back/README.md](../Back/README.md) para configurar o token e publicar o Worker. Para usar outro endpoint diretamente, crie um arquivo `.env.local` nesta pasta:
 
 ```env
 VITE_API_URL=http://localhost:3000/api/chat
@@ -44,3 +44,5 @@ Também são aceitos os formatos nativos `{ "message": { "content": "..." } }` e
 ```sh
 npm run build
 ```
+
+utilizar cloudflared tunnel --url http://127.0.0.1:8000 no cmd do pc para pegar o link temporario da api back end e colocar no worker.js
