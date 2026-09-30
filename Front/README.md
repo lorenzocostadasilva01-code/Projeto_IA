@@ -1,37 +1,45 @@
-# front
+# Nexo · Assistente IA
 
-This template should help get you started developing with Vue 3 in Vite.
+Interface de chat em Vue 3 preparada para enviar mensagens ao backend, que faz a comunicação com a Ollama. O navegador não chama a Ollama diretamente.
 
-## Recommended IDE Setup
-
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Recommended Browser Setup
-
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
+## Executar
 
 ```sh
 npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
 npm run dev
 ```
 
-### Compile and Minify for Production
+Na configuração local, o Vite encaminha `/api` para o backend em `http://127.0.0.1:8000`. Inicie o Python e o Vite em terminais separados. Para usar outro endereço de API, crie um arquivo `.env.local` nesta pasta:
+
+```env
+VITE_API_URL=http://localhost:3000/api/chat
+VITE_CHAT_MODEL=llama3.2
+```
+
+`VITE_API_URL` é opcional e, sem configuração, usa `/api/chat`. Reinicie o Vite após alterar variáveis de ambiente. Para iniciar o backend e conferir o contrato, consulte [Back/README.md](../Back/README.md).
+
+## Contrato HTTP
+
+O front envia `POST` para `VITE_API_URL`, com `Content-Type: application/json`:
+
+```json
+{
+  "model": "llama3.2",
+  "messages": [
+    { "role": "user", "content": "Olá!" }
+  ]
+}
+```
+
+O backend deve encaminhar `model` e `messages` para a Ollama e responder com JSON em um destes formatos:
+
+```json
+{ "reply": "Olá! Como posso ajudar?" }
+```
+
+Também são aceitos os formatos nativos `{ "message": { "content": "..." } }` e `{ "response": "..." }`. Respostas HTTP de erro são exibidas no chat com opção para tentar novamente.
+
+## Build
 
 ```sh
 npm run build
