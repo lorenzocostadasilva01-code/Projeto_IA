@@ -46,3 +46,11 @@ npm run build
 ```
 
 utilizar cloudflared tunnel --url http://127.0.0.1:8000 no cmd do pc para pegar o link temporario da api back end e colocar no worker.js
+
+npx wrangler deploy executar na pasta Front
+npx wrangler secret put BACKEND_API_TOKEN
+npm run build
+
+
+npx wrangler secret put BACKEND_API_TOKEN
+dps colocar seu token que vai estar na main.py 

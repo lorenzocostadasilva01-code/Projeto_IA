@@ -323,15 +323,18 @@ button:focus-visible, textarea:focus-visible { outline: 2px solid var(--lime); o
 @keyframes arrive { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes pulse { 0%, 60%, 100% { opacity: .38; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-3px); } }
 
-@media (max-width: 760px) {
-  .sidebar { width: 61px; flex-basis: 61px; align-items: center; padding: 22px 8px 13px; }
-  .brand { margin: 1px 0 39px; }
-  .brand-name, .new-chat-button span, .new-chat-button kbd, .sidebar-label, .nav-item span, .history-item, .sidebar-bottom { display: none; }
-  .new-chat-button { width: 40px; justify-content: center; padding: 0; }
-  .new-chat-button svg { width: 17px; height: 17px; }
-  .sidebar-nav { margin-top: 26px; }
-  .nav-item { width: 40px; justify-content: center; padding: 0; }
-  .topbar { height: 58px; padding: 0 19px; }
+@media (max-width: 760px), (max-height: 500px) and (max-width: 900px) {
+  .app-shell { min-height: 100vh; height: 100vh; min-height: 100dvh; height: 100dvh; flex-direction: column; }
+  .sidebar { width: 100%; height: 56px; flex: 0 0 56px; flex-direction: row; justify-content: space-between; align-items: center; padding: 0 14px; border-right: 0; border-bottom: 1px solid #2b2e2a; }
+  .brand { margin: 0; gap: 8px; }
+  .brand-name { display: block; font-size: 20px; }
+  .new-chat-button { width: auto; height: 40px; justify-content: center; gap: 8px; padding: 0 11px; }
+  .new-chat-button span { display: inline; }
+  .new-chat-button kbd, .sidebar-label, .sidebar-nav, .sidebar-bottom { display: none; }
+  .main-panel { height: calc(100vh - 56px); height: calc(100dvh - 56px); min-height: 0; }
+  .topbar { height: 58px; flex: none; padding: 0 19px; }
+  .welcome-view { min-height: 0; overflow-y: auto; }
+  .message-list { min-height: 0; }
   .topbar-right { gap: 8px; }
   .welcome-content { width: min(600px, calc(100% - 40px)); }
   .welcome-content h1 { font-size: clamp(42px, 8vw, 54px); }
@@ -341,32 +344,37 @@ button:focus-visible, textarea:focus-visible { outline: 2px solid var(--lime); o
   .suggestion-prompt { font-size: 9px; }
   .welcome-index { right: 20px; bottom: 22px; }
   .message-list, .composer-area { width: calc(100% - 34px); }
+  .composer-area { flex: none; }
 }
 
 @media (max-width: 500px) {
   .breadcrumb { gap: 7px; font-size: 10px; }
   .model-chip { gap: 6px; padding: 0 7px; font-size: 9px; }
-  .welcome-view { min-height: 470px; align-items: center; }
+  .welcome-view { min-height: 0; align-items: start; overflow-y: auto; }
   .welcome-content { padding: 25px 0; }
   .welcome-content h1 { margin-top: 19px; font-size: 43px; }
   .welcome-content > p { max-width: 340px; font-size: 12px; }
   .suggestion-grid { grid-template-columns: 1fr; gap: 7px; margin-top: 24px; }
-  .suggestion-card { min-height: 67px; display: grid; grid-template-columns: 29px 1fr 15px; grid-template-rows: 1fr 1fr; column-gap: 9px; padding: 10px; }
-  .suggestion-icon { grid-row: 1 / 3; margin: 0; }
-  .suggestion-title { align-self: end; font-size: 10px; }
-  .suggestion-prompt { max-width: 100%; margin-top: 2px; }
-  .suggestion-arrow { top: 50%; right: 11px; transform: translateY(-50%); }
-  .composer-area { width: calc(100% - 25px); padding-bottom: 12px; }
+  .suggestion-card { min-height: 67px; display: grid; grid-template-columns: 29px minmax(0, 1fr) 15px; grid-template-rows: minmax(15px, auto) minmax(15px, auto); column-gap: 9px; padding: 10px; }
+  .suggestion-icon { grid-column: 1; grid-row: 1 / 3; margin: 0; }
+  .suggestion-title { grid-column: 2; grid-row: 1; align-self: end; font-size: 10px; }
+  .suggestion-prompt { grid-column: 2; grid-row: 2; max-width: 100%; margin-top: 2px; }
+  .suggestion-arrow { grid-column: 3; grid-row: 1 / 3; top: 50%; right: 11px; align-self: center; transform: translateY(-50%); }
+  .composer-area { width: calc(100% - 25px); flex: none; padding-bottom: max(12px, env(safe-area-inset-bottom)); }
   .composer { padding: 12px 10px 9px 12px; }
   .composer-hint { max-width: 190px; font-size: 8px; line-height: 1.35; }
   .composer-actions { gap: 7px; }
   .key-hint span { display: none; }
   .footer-note { font-size: 8px; }
-  .message-list { width: calc(100% - 26px); padding-top: 27px; }
+  .message-list { width: calc(100% - 26px); min-height: 0; padding-top: 27px; }
   .message-content { max-width: 84%; }
   .message-content p { font-size: 12px; }
   .api-error { flex-wrap: wrap; margin-left: 0; }
   .api-error button { margin-left: 28px; }
+}
+
+@media (max-height: 700px) and (max-width: 760px) {
+  .welcome-view { place-items: start center; }
 }
 
 @media (prefers-reduced-motion: reduce) {
