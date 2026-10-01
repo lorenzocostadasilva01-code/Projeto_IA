@@ -8,9 +8,15 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, field_validator
 
 OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434").rstrip("/")
-DEFAULT_MODEL = os.getenv("OLLAMA_DEFAULT_MODEL", "llama3.2")
+DEFAULT_MODEL = os.getenv("OLLAMA_DEFAULT_MODEL", "deepseek-r1:14b")
 OLLAMA_TIMEOUT_SECONDS = float(os.getenv("OLLAMA_TIMEOUT_SECONDS", "180"))
-CHAT_API_TOKEN = os.getenv("meu_token_super_seguro_123")
+CHAT_API_TOKEN = os.getenv("CHAT_API_TOKEN")
+SYSTEM_PROMPT = (
+    "Responda exclusivamente em português do Brasil (pt-BR), em todas as mensagens. "
+    "Não mude para outro idioma, mesmo que o usuário peça. "
+    "Mantenha em outro idioma apenas nomes próprios, código, URLs e termos técnicos "
+    "sem tradução natural."
+)
 
 app = FastAPI(title="Nexo API", version="1.0.0")
 app.add_middleware(
@@ -62,9 +68,18 @@ async def chat(
 
     ollama_request = {
         "model": request.model,
-        "messages": [message.model_dump() for message in request.messages],
+        "messages": [
+            {"role": "system", "content": SYSTEM_PROMPT},
+            *(message.model_dump() for message in request.messages),
+        ],
         "stream": False,
     }
+    latest_user_message = next(
+        (message for message in reversed(ollama_request["messages"]) if message["role"] == "user"),
+        None,
+    )
+    if latest_user_message:
+        latest_user_message["content"] += f"\n\n{SYSTEM_PROMPT}"
 
     try:
         async with httpx.AsyncClient(timeout=OLLAMA_TIMEOUT_SECONDS) as client:

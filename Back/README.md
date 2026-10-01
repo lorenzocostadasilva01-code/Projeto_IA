@@ -5,7 +5,7 @@ API em Python que recebe mensagens do front e as encaminha para a Ollama local. 
 ## Requisitos
 
 - Python 3.10 ou superior
-- Ollama em execução, com o modelo `llama3.2` baixado
+- Ollama em execução, com o modelo `deepseek-r1:14b` baixado (`ollama pull deepseek-r1:14b`)
 
 ## Executar no Windows
 
@@ -40,11 +40,11 @@ O navegador continua chamando `/api/chat` no próprio domínio do site. O Worker
 
 ## Configuração
 
-Por padrão, a API usa `http://localhost:11434` e o modelo `llama3.2`. Para alterar, defina antes de iniciar o Uvicorn:
+Por padrão, a API usa `http://localhost:11434` e o modelo `deepseek-r1:14b`. Para alterar, defina antes de iniciar o Uvicorn:
 
 ```powershell
 $env:OLLAMA_BASE_URL = "http://localhost:11434"
-$env:OLLAMA_DEFAULT_MODEL = "llama3.2"
+$env:OLLAMA_DEFAULT_MODEL = "deepseek-r1:14b"
 $env:OLLAMA_TIMEOUT_SECONDS = "180"
 ```
 
@@ -56,11 +56,11 @@ $env:OLLAMA_TIMEOUT_SECONDS = "180"
 
 ```json
 {
-  "model": "llama3.2",
+  "model": "deepseek-r1:14b",
   "messages": [
     { "role": "user", "content": "Olá!" }
   ]
 }
 ```
 
-A API envia esse conteúdo para `POST /api/chat` da Ollama com `stream: false` e responde ao front com `{ "reply": "...", "model": "llama3.2" }`. Erros de conexão, timeout e respostas inválidas da Ollama retornam códigos HTTP apropriados e uma mensagem em `detail`.
+A API envia esse conteúdo para `POST /api/chat` da Ollama com `stream: false` e responde ao front com `{ "reply": "...", "model": "deepseek-r1:14b" }`. Erros de conexão, timeout e respostas inválidas da Ollama retornam códigos HTTP apropriados e uma mensagem em `detail`.
