@@ -2,7 +2,7 @@
 import { nextTick, ref, watch } from 'vue'
 
 const apiUrl = import.meta.env.VITE_API_URL || '/api/chat'
-const model = import.meta.env.VITE_CHAT_MODEL || 'llama3.2'
+const model = import.meta.env.VITE_CHAT_MODEL || 'deepseek-r1:14b'
 const messages = ref([])
 const draft = ref('')
 const isLoading = ref(false)

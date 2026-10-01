@@ -1,4 +1,4 @@
-const BACKEND_URL = 'https://ctrl-airline-elect-mounting.trycloudflare.com' //modificar esse link quando criar um novo worker no cloudflare, esse link é do meu worker, então não vai funcionar para você.
+const BACKEND_URL = 'https://meanwhile-nuts-indie-handy.trycloudflare.com ' //modificar esse link quando criar um novo worker no cloudflare, esse link é do meu worker, então não vai funcionar para você.
 
 function jsonResponse(body, status) {
   return new Response(JSON.stringify(body), {

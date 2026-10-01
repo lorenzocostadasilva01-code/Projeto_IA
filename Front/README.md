@@ -13,7 +13,7 @@ Na configuração local, o Vite encaminha `/api` para o backend pelo Cloudflare 
 
 ```env
 VITE_API_URL=http://localhost:3000/api/chat
-VITE_CHAT_MODEL=llama3.2
+VITE_CHAT_MODEL=deepseek-r1:14b
 ```
 
 `VITE_API_URL` é opcional e, sem configuração, usa `/api/chat`. Reinicie o Vite após alterar variáveis de ambiente. Para iniciar o backend e conferir o contrato, consulte [Back/README.md](../Back/README.md).
@@ -24,7 +24,7 @@ O front envia `POST` para `VITE_API_URL`, com `Content-Type: application/json`:
 
 ```json
 {
-  "model": "llama3.2",
+  "model": "deepseek-r1:14b",
   "messages": [
     { "role": "user", "content": "Olá!" }
   ]
